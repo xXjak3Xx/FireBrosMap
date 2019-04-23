@@ -12,10 +12,50 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     minZoom: 2
 }).addTo(map);
 
- 
+//Declaring variables
+let last = null;
+let closestMarker = null;
+let markers = [];
 let coord = [0,0];
-checkCompatability();
-addToMap(null);
+
+//Adds the two radio buttons
+let command1 = L.control({position: 'topright'});
+let command2 = L.control({position: 'topright'});
+command1.onAdd = function(map){
+	let closest = L.DomUtil.create('div', 'closest');	
+	closest.innerHTML = '<form><input id="closest" type="checkbox"/><font size="6"><b>Show Closest Bathroom</b></font></form>';
+	return closest;
+}
+command2.onAdd = function(map){
+	let all = L.DomUtil.create('div', 'all');
+	all.innerHTML = '<form><input id="all" type="checkbox"/><font size="6"><b>Show All Bathrooms</b></font></form>';
+	return all;
+}
+command1.addTo(map);
+command2.addTo(map);
+
+//Event Handler
+function handleAll(){
+	console.log("all handled: " + this.checked);
+	if(last != null)
+		last.checked = false;
+	last = this;
+	addAllToMap([]);
+}
+
+//Event Handler
+function handleClosest(){
+	console.log("closest handled: " + this.checked);
+	if(last != null)
+		last.checked = false;
+	last = this;
+	addToMap(closest);
+}
+document.getElementById ("all").addEventListener ("click", handleAll, false);
+document.getElementById ("closest").addEventListener ("click", handleClosest, false);
+
+
+
 	  
 //Call this to set coord variable to current location and check browser compatability	  
 function checkCompatability(){
@@ -34,7 +74,7 @@ function getLocation(position){
 
 function addAllToMap(allTargets){
 	for(let i = 0; i < allTargets.length; i++){
-		addToMap(allTargets[i]);
+		markers.push(addToMap(allTargets[i]));
 	}
 }
 
@@ -44,4 +84,10 @@ function addToMap(target){
 	//Example
 	let adams = L.marker([38.829715, -77.301219]).addTo(map);
    	adams.bindPopup("<b>Adam's Bathroom</b><br><b>Rating:</b> 2/10 <br><b>Review:</b> Dirty freshman dorm bathroom. I recommend going anywhere else if possible.");
+	return adams;
 }
+
+
+//"main"
+checkCompatability();
+addToMap(null);
