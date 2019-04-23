@@ -34,7 +34,7 @@ function getLocation(position){
 
 function addAllToMap(allTargets){
 	for(let i = 0; i < allTargets.length; i++){
-		addToMap(allTargets[i];
+		addToMap(allTargets[i]);
 	}
 }
 
@@ -43,5 +43,5 @@ function addToMap(target){
 	
 	//Example
 	let adams = L.marker([38.829715, -77.301219]).addTo(map);
-   	adams.bindPopup("Adam's Bathroom \n Rating: 2/10\n Review: Dirty freshman dorm bathroom. I recommend going anywhere else if possible.");
+   	adams.bindPopup("<b>Adam's Bathroom</b><br><b>Rating:</b> 2/10 <br><b>Review:</b> Dirty freshman dorm bathroom. I recommend going anywhere else if possible.");
 }
