@@ -36,20 +36,18 @@ command2.addTo(map);
 
 //Event Handler
 function handleAll(){
-	console.log("all handled: " + this.checked);
 	if(last != null)
 		last.checked = false;
 	last = this;
-	addAllToMap([]);
+	addAllToMap(markers);
 }
 
 //Event Handler
 function handleClosest(){
-	console.log("closest handled: " + this.checked);
 	if(last != null)
 		last.checked = false;
 	last = this;
-	addToMap(closest);
+	addToMap(closestMarker);
 }
 document.getElementById ("all").addEventListener ("click", handleAll, false);
 document.getElementById ("closest").addEventListener ("click", handleClosest, false);
@@ -81,13 +79,19 @@ function addAllToMap(allTargets){
 function addToMap(target){
 	//Adds location to the map
 	
+	target.bindPopup();
+	let lat = target.Lattitude;
+	let long = target.Longitude;
+	
 	//Example
-	let adams = L.marker([38.829715, -77.301219]).addTo(map);
-   	adams.bindPopup("<b>Adam's Bathroom</b><br><b>Rating:</b> 2/10 <br><b>Review:</b> Dirty freshman dorm bathroom. I recommend going anywhere else if possible.");
+	let adams = L.marker([lat, long]).addTo(map);
+   	adams.bindPopup("<b>" + target.BathroomName"</b><br><b>Rating:</b>" + target.rating);
 	return adams;
 }
 
 
 //"main"
 checkCompatability();
+closestMarker = findClosestBathroom(coord, 1)[0];
+markers = findClosestBathroom(coord, 100);
 addToMap(null);
